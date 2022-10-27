@@ -30,6 +30,7 @@ CREATE TABLE `xxl_job_info` (
   `trigger_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '调度状态：0-停止，1-运行',
   `trigger_last_time` bigint(13) NOT NULL DEFAULT '0' COMMENT '上次调度时间',
   `trigger_next_time` bigint(13) NOT NULL DEFAULT '0' COMMENT '下次调度时间',
+  `job_gray_type` tinyint NOT NULL DEFAULT '0' COMMENT '0=只调用正常服务，1=只调用灰度，2=混合调用',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -81,6 +82,7 @@ CREATE TABLE `xxl_job_registry` (
   `registry_key` varchar(255) NOT NULL,
   `registry_value` varchar(255) NOT NULL,
   `update_time` datetime DEFAULT NULL,
+  `is_gray` tinyint NOT NULL DEFAULT '0' COMMENT '是否灰度',
   PRIMARY KEY (`id`),
   KEY `i_g_k_v` (`registry_group`,`registry_key`,`registry_value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
