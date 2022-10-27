@@ -11,6 +11,7 @@ public class XxlJobRegistry {
     private String registryGroup;
     private String registryKey;
     private String registryValue;
+    private int isGray;
     private Date updateTime;
 
     public int getId() {
@@ -51,5 +52,13 @@ public class XxlJobRegistry {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getIsGray() {
+        return isGray;
+    }
+
+    public void setIsGray(int isGray) {
+        this.isGray = isGray;
     }
 }

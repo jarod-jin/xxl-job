@@ -138,10 +138,10 @@ public class AdminBizImpl implements AdminBiz {
                 || !StringUtils.hasText(registryParam.getRegistryValue())) {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
         }
-
-        int ret = xxlJobRegistryDao.registryUpdate(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
+        int isGray = registryParam.getGray()? 1:0;
+        int ret = xxlJobRegistryDao.registryUpdate(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), isGray,registryParam.getRegistryValue(), new Date());
         if (ret < 1) {
-            xxlJobRegistryDao.registrySave(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue(), new Date());
+            xxlJobRegistryDao.registrySave(registryParam.getRegistryGroup(), registryParam.getRegistryKey(),isGray,registryParam.getRegistryValue(), new Date());
 
             // fresh
             freshGroupRegistryInfo(registryParam);
@@ -159,7 +159,7 @@ public class AdminBizImpl implements AdminBiz {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
         }
 
-        int ret = xxlJobRegistryDao.registryDelete(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
+        int ret = xxlJobRegistryDao.registryDelete(registryParam.getRegistryGroup(), registryParam.getRegistryKey(), registryParam.getGray()?1:0, registryParam.getRegistryValue());
         if (ret > 0) {
 
             // fresh

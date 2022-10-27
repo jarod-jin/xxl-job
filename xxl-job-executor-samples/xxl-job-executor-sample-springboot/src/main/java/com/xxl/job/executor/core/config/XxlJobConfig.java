@@ -40,6 +40,9 @@ public class XxlJobConfig {
     @Value("${xxl.job.executor.logretentiondays}")
     private int logRetentionDays;
 
+    @Value("${gray:false}")
+    private Boolean isGray;
+
 
     @Bean
     public XxlJobSpringExecutor xxlJobExecutor() {
@@ -53,6 +56,9 @@ public class XxlJobConfig {
         xxlJobSpringExecutor.setAccessToken(accessToken);
         xxlJobSpringExecutor.setLogPath(logPath);
         xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);
+
+        xxlJobSpringExecutor.setIsGray(isGray);
+
 
         return xxlJobSpringExecutor;
     }

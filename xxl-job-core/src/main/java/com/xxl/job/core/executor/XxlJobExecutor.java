@@ -35,6 +35,8 @@ public class XxlJobExecutor  {
     private String logPath;
     private int logRetentionDays;
 
+    private Boolean isGray;
+
     public void setAdminAddresses(String adminAddresses) {
         this.adminAddresses = adminAddresses;
     }
@@ -60,7 +62,9 @@ public class XxlJobExecutor  {
         this.logRetentionDays = logRetentionDays;
     }
 
-
+    public void setIsGray(Boolean isGray) {
+        this.isGray = isGray;
+    }
     // ---------------------- start + stop ----------------------
     public void start() throws Exception {
 
@@ -149,7 +153,7 @@ public class XxlJobExecutor  {
 
         // start
         embedServer = new EmbedServer();
-        embedServer.start(address, port, appname, accessToken);
+        embedServer.start(address, port, appname, accessToken, isGray);
     }
 
     private void stopEmbedServer() {
@@ -203,4 +207,11 @@ public class XxlJobExecutor  {
         return jobThread;
     }
 
+    public Boolean getGray() {
+        return isGray;
+    }
+
+    public void setGray(Boolean gray) {
+        isGray = gray;
+    }
 }

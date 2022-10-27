@@ -4,6 +4,7 @@ import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobLog;
+import com.xxl.job.admin.core.model.XxlJobRegistry;
 import com.xxl.job.admin.core.route.ExecutorRouteStrategyEnum;
 import com.xxl.job.admin.core.scheduler.XxlJobScheduler;
 import com.xxl.job.admin.core.util.I18nUtil;
@@ -11,12 +12,15 @@ import com.xxl.job.core.biz.ExecutorBiz;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.biz.model.TriggerParam;
 import com.xxl.job.core.enums.ExecutorBlockStrategyEnum;
+import com.xxl.job.core.enums.RegistryConfig;
 import com.xxl.job.core.util.IpUtil;
 import com.xxl.job.core.util.ThrowableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * xxl-job trigger
@@ -59,6 +63,11 @@ public class XxlJobTrigger {
         }
         int finalFailRetryCount = failRetryCount>=0?failRetryCount:jobInfo.getExecutorFailRetryCount();
         XxlJobGroup group = XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao().load(jobInfo.getJobGroup());
+        //灰度处理
+        if (jobInfo.getJobGrayType() != 2){
+            group.setAddressList(getGrayAddressList(jobInfo, group.getAppname()));
+        }
+
 
         // cover addressList
         if (addressList!=null && addressList.trim().length()>0) {
@@ -89,6 +98,29 @@ public class XxlJobTrigger {
             processTrigger(group, jobInfo, finalFailRetryCount, triggerType, shardingParam[0], shardingParam[1]);
         }
 
+    }
+
+    /**
+     * 灰度地址获取
+     *
+     * @param jobInfo
+     * @param appname
+     * @return
+     */
+    private static String getGrayAddressList(XxlJobInfo jobInfo, String appname) {
+        List<String> registryList  = XxlJobAdminConfig.getAdminConfig().getXxlJobRegistryDao()
+                .findByGroupAndKey(RegistryConfig.RegistType.EXECUTOR.name(), appname)
+                .stream().filter(e-> jobInfo.getJobGrayType()==e.getIsGray())
+                .map(XxlJobRegistry::getRegistryValue)
+                .collect(Collectors.toList());
+        StringBuilder addressListStr = new StringBuilder();
+        for (String item:registryList) {
+            addressListStr.append(item).append(",");
+        }
+        if (addressListStr.length()>0){
+            return addressListStr.substring(0, addressListStr.length()-1);
+        }
+        return "";
     }
 
     private static boolean isNumeric(String str){

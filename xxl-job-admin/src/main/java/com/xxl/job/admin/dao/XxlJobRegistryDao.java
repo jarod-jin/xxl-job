@@ -23,16 +23,24 @@ public interface XxlJobRegistryDao {
 
     public int registryUpdate(@Param("registryGroup") String registryGroup,
                               @Param("registryKey") String registryKey,
+                              @Param("isGray") int isGray,
                               @Param("registryValue") String registryValue,
                               @Param("updateTime") Date updateTime);
 
     public int registrySave(@Param("registryGroup") String registryGroup,
                             @Param("registryKey") String registryKey,
+                            @Param("isGray") int isGray,
                             @Param("registryValue") String registryValue,
                             @Param("updateTime") Date updateTime);
 
     public int registryDelete(@Param("registryGroup") String registryGroup,
                           @Param("registryKey") String registryKey,
+                          @Param("isGray") int isGray,
                           @Param("registryValue") String registryValue);
+
+
+    List<XxlJobRegistry> findByGroupAndKey(@Param("registryGroup") String registryGroup,
+                              @Param("registryKey") String registryKey);
+
 
 }

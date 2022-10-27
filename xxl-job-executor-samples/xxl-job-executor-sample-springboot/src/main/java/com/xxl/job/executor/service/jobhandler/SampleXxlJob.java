@@ -7,8 +7,12 @@ import com.xxl.job.core.log.XxlJobLogger;
 import com.xxl.job.core.util.ShardingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -32,13 +36,20 @@ import java.util.concurrent.TimeUnit;
 public class SampleXxlJob {
     private static Logger logger = LoggerFactory.getLogger(SampleXxlJob.class);
 
+    @Value("${xxl.job.executor.port}")
+    private int port;
 
     /**
      * 1、简单任务示例（Bean模式）
      */
     @XxlJob("demoJobHandler")
     public ReturnT<String> demoJobHandler(String param) throws Exception {
+
+
+
         XxlJobLogger.log("XXL-JOB, Hello World.");
+
+        XxlJobLogger.log("当前端口为--------"+port);
 
         for (int i = 0; i < 5; i++) {
             XxlJobLogger.log("beat at:" + i);

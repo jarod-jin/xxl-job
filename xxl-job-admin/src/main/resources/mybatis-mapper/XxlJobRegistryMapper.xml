@@ -7,6 +7,7 @@
 		<result column="id" property="id" />
 	    <result column="registry_group" property="registryGroup" />
 	    <result column="registry_key" property="registryKey" />
+		<result column="is_gray" property="isGray" />
 	    <result column="registry_value" property="registryValue" />
 		<result column="update_time" property="updateTime" />
 	</resultMap>
@@ -15,6 +16,7 @@
 		t.id,
 		t.registry_group,
 		t.registry_key,
+		t.is_gray,
 		t.registry_value,
 		t.update_time
 	</sql>
@@ -45,18 +47,27 @@
         WHERE `registry_group` = #{registryGroup}
           AND `registry_key` = #{registryKey}
           AND `registry_value` = #{registryValue}
+		  AND `is_gray` = #{isGray}
     </update>
 
     <insert id="registrySave" >
-        INSERT INTO xxl_job_registry( `registry_group` , `registry_key` , `registry_value`, `update_time`)
-        VALUES( #{registryGroup}  , #{registryKey} , #{registryValue}, #{updateTime})
+        INSERT INTO xxl_job_registry( `registry_group` , `registry_key` , `registry_value`, `update_time`, `is_gray`)
+        VALUES( #{registryGroup}  , #{registryKey} , #{registryValue}, #{updateTime} , #{isGray})
     </insert>
 
 	<delete id="registryDelete" >
 		DELETE FROM xxl_job_registry
 		WHERE registry_group = #{registryGroup}
 			AND registry_key = #{registryKey}
+		    AND `is_gray` = #{isGray}
 			AND registry_value = #{registryValue}
 	</delete>
+
+	<select id="findByGroupAndKey" parameterType="java.util.HashMap" resultMap="XxlJobRegistry">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_registry AS t
+		WHERE `registry_group` = #{registryGroup}
+			AND `registry_key` = #{registryKey}
+	</select>
 
 </mapper>

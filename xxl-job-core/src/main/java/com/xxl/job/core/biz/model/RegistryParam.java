@@ -11,12 +11,21 @@ public class RegistryParam implements Serializable {
     private String registryGroup;
     private String registryKey;
     private String registryValue;
+    private Boolean isGray;
 
     public RegistryParam(){}
+    public RegistryParam(String registryGroup, String registryKey, String registryValue,Boolean isGray) {
+        this.registryGroup = registryGroup;
+        this.registryKey = registryKey;
+        this.registryValue = registryValue;
+        this.isGray = isGray;
+    }
+
     public RegistryParam(String registryGroup, String registryKey, String registryValue) {
         this.registryGroup = registryGroup;
         this.registryKey = registryKey;
         this.registryValue = registryValue;
+        this.isGray = false;
     }
 
     public String getRegistryGroup() {
@@ -43,12 +52,23 @@ public class RegistryParam implements Serializable {
         this.registryValue = registryValue;
     }
 
+    public Boolean getGray() {
+        return isGray;
+    }
+
+    public void setGray(Boolean gray) {
+        isGray = gray;
+    }
+
     @Override
     public String toString() {
         return "RegistryParam{" +
                 "registryGroup='" + registryGroup + '\'' +
                 ", registryKey='" + registryKey + '\'' +
                 ", registryValue='" + registryValue + '\'' +
+                ", isGray='" + isGray + '\'' +
                 '}';
     }
+
+
 }

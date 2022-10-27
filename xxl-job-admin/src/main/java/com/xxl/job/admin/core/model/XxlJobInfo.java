@@ -14,6 +14,8 @@ public class XxlJobInfo {
 	private int jobGroup;		// 执行器主键ID
 	private String jobCron;		// 任务执行CRON表达式
 	private String jobDesc;
+
+	private int jobGrayType = 0; 	//灰度节点调用方式 0= 只调用非灰度节点，1= 只调用灰度节点， 2= 混合调用
 	
 	private Date addTime;
 	private Date updateTime;
@@ -214,5 +216,13 @@ public class XxlJobInfo {
 
 	public void setTriggerNextTime(long triggerNextTime) {
 		this.triggerNextTime = triggerNextTime;
+	}
+
+	public int getJobGrayType() {
+		return jobGrayType;
+	}
+
+	public void setJobGrayType(int jobGrayType) {
+		this.jobGrayType = jobGrayType;
 	}
 }

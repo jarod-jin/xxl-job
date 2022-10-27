@@ -13,6 +13,7 @@ $(function() {
 	        	obj.jobGroup = $('#jobGroup').val();
                 obj.triggerStatus = $('#triggerStatus').val();
                 obj.jobDesc = $('#jobDesc').val();
+				obj.jobGrayType =  $('#jobGrayType').val();
 	        	obj.executorHandler = $('#executorHandler').val();
                 obj.author = $('#author').val();
 	        	obj.start = d.start;
@@ -28,7 +29,7 @@ $(function() {
 	                	"data": 'id',
 						"bSortable": false,
 						"visible" : true,
-						"width":'7%'
+						"width":'5%'
 					},
 	                {
 	                	"data": 'jobGroup',
@@ -81,11 +82,26 @@ $(function() {
 	                		return data?moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss"):"";
 	                	}
 	                },
-	                { "data": 'author', "visible" : true, "width":'10%'},
+	                { "data": 'author', "visible" : true, "width":'5%'},
+			        { "data": 'jobGrayType', "visible" : true, "width":'7%',
+						"render": function ( data, type, row ) {
+							// status
+							if (0 == data) {
+								return '非灰度';
+							}
+							if (1 == data) {
+								return '灰度';
+							}
+							if (2 == data) {
+								return '混合';
+							}
+							return data;
+						}
+					},
 	                { "data": 'alarmEmail', "visible" : false},
 	                {
 	                	"data": 'triggerStatus',
-						"width":'10%',
+						"width":'8%',
 	                	"visible" : true,
 	                	"render": function ( data, type, row ) {
                             // status
@@ -384,6 +400,9 @@ $(function() {
 			author : {
 				required : true
 			},
+			jobGrayType : {
+				required : true
+			},
             executorTimeout : {
                 digits:true
             },
@@ -502,6 +521,7 @@ $(function() {
 		}
 	});
 
+
 	// update
 	$("#job_list").on('click', '.update',function() {
 
@@ -521,7 +541,7 @@ $(function() {
 		$("#updateModal .form input[name='executorHandler']").val( row.executorHandler );
 		$("#updateModal .form textarea[name='executorParam']").val( row.executorParam );
         $("#updateModal .form input[name='childJobId']").val( row.childJobId );
-		$('#updateModal .form select[name=executorBlockStrategy] option[value='+ row.executorBlockStrategy +']').prop('selected', true);
+		$('#updateModal .form select[name=jobGrayType] option[value='+ row.jobGrayType +']').prop('selected', true);
 		$('#updateModal .form select[name=glueType] option[value='+ row.glueType +']').prop('selected', true);
 
         $("#updateModal .form select[name=glueType]").change();
@@ -547,6 +567,9 @@ $(function() {
 				required : true
 			},
 			author : {
+				required : true
+			},
+			jobGrayType : {
 				required : true
 			},
             executorTimeout : {
@@ -667,6 +690,7 @@ $(function() {
 		$("#addModal .form textarea[name='executorParam']").val( row.executorParam );
 		$("#addModal .form input[name='childJobId']").val( row.childJobId );
 		$('#addModal .form select[name=executorBlockStrategy] option[value='+ row.executorBlockStrategy +']').prop('selected', true);
+		$('#addModal .form select[name=jobGrayType] option[value='+ row.jobGrayType +']').prop('selected', true);
 		$('#addModal .form select[name=glueType] option[value='+ row.glueType +']').prop('selected', true);
 
 		$("#addModal .form select[name=glueType]").change();
