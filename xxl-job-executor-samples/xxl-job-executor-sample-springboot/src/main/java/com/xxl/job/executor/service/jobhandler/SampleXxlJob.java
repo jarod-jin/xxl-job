@@ -33,12 +33,14 @@ public class SampleXxlJob {
     private static Logger logger = LoggerFactory.getLogger(SampleXxlJob.class);
 
 
+
     /**
      * 1、简单任务示例（Bean模式）
      */
     @XxlJob("demoJobHandler")
     public ReturnT<String> demoJobHandler(String param) throws Exception {
-        XxlJobLogger.log("XXL-JOB, Hello World.");
+        XxlJobLogger.log("XXL-JOB-OLD, Hello World.");
+
 
         for (int i = 0; i < 5; i++) {
             XxlJobLogger.log("beat at:" + i);
